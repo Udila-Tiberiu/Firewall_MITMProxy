@@ -1,5 +1,6 @@
 from mitmproxy import http
 import fnmatch
+import os
 
 # Ad URL patterns to block
 AD_PATTERNS = [
@@ -21,13 +22,16 @@ AD_PATTERNS = [
     "*://*.cdn.zedo.com/*"
 ]
 
-# Words to block if found in page content
-BLOCKED_KEYWORDS = [
-    "gambling",
-]
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BANNED_WORDS_FILE = os.path.join(BASE_DIR, "../banned_words.log")
+LOG_FILE_ADS = os.path.join(BASE_DIR, "../blocked_ads.log")
+LOG_FILE_CONTENT = os.path.join(BASE_DIR, "../blocked_websites.log")
 
-LOG_FILE_ADS = "blocked_ads.log"
-LOG_FILE_CONTENT = "blocked_websites.log"
+def load_banned_keywords():
+    if os.path.exists(BANNED_WORDS_FILE):
+        with open(BANNED_WORDS_FILE, "r", encoding="utf-8") as file:
+            return [line.strip().lower() for line in file if line.strip()]
+    return []
 
 def matches_ad_pattern(url: str) -> bool:
     for pattern in AD_PATTERNS:
@@ -37,8 +41,9 @@ def matches_ad_pattern(url: str) -> bool:
     return False
 
 def contains_blocked_keywords(content: str) -> bool:
+    blocked_keywords = load_banned_keywords()
     lowered = content.lower()
-    return any(word in lowered for word in BLOCKED_KEYWORDS)
+    return any(word in lowered for word in blocked_keywords)
 
 def request(flow: http.HTTPFlow) -> None:
     url = flow.request.url
@@ -65,4 +70,4 @@ def response(flow: http.HTTPFlow) -> None:
                     {"Content-Type": "text/plain"}
                 )
         except Exception:
-            pass  # Some content might not decode properly; skip those
+            pass
