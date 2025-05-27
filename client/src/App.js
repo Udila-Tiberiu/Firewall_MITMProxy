@@ -3,7 +3,6 @@ import LogViewer from "./LogViewer";
 import BannedWordsTable from "./BannedWordsViewer";
 import Modal from "react-modal";
 
-// Bind modal to root app element
 Modal.setAppElement("#root");
 
 function App() {
@@ -22,7 +21,7 @@ function App() {
                 justifyContent: "space-between",
                 alignItems: "center"
             }}>
-                <h2>Ad & Content Blocker</h2>
+                <h2>Ad Blocker and Unwanted Content Filter</h2>
                 <div>
                     <button onClick={() => setModalType("ads")} style={{ marginRight: "10px" }}>
                         View Blocked Ads

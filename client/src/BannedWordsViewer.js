@@ -41,15 +41,6 @@ function BannedWordsTable() {
 
     return (
         <div style={{ padding: "20px" }}>
-            <nav style={{
-                backgroundColor: "#333",
-                color: "#fff",
-                padding: "10px",
-                fontSize: "18px"
-            }}>
-                Banned Words Management
-            </nav>
-
             <div style={{ marginTop: "20px", marginBottom: "20px" }}>
                 <input
                     type="text"

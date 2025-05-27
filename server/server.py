@@ -22,14 +22,17 @@ def get_ads_log():
 
 @app.route("/logs/content", methods=["GET"])
 def get_content_log():
-    return jsonify(read_log(LOG_FILE_CONTENT))
+    lines = read_log(LOG_FILE_CONTENT)
+    result = []
+    for line in lines:
+        if ' ' in line:
+            word, url = line.split(' ', 1)
+            result.append({"word": word, "url": url})
+    return jsonify(result)
 
 @app.route("/logs/banned_words", methods=["GET"])
 def get_banned_words():
-    if os.path.exists(BANNED_WORDS_FILE):
-        with open(BANNED_WORDS_FILE, "r", encoding="utf-8") as file:
-            return jsonify([line.strip() for line in file if line.strip()])
-    return jsonify([])
+    return jsonify(read_log(BANNED_WORDS_FILE))
 
 @app.route("/logs/clear/<log_type>", methods=["POST"])
 def clear_log(log_type):
@@ -48,29 +51,23 @@ def add_banned_word():
     word = request.json.get("word", "").strip().lower()
     if not word:
         return jsonify({"error": "No word provided"}), 400
-
-    # Avoid duplicates
     existing = read_log(BANNED_WORDS_FILE)
     if word not in existing:
         with open(BANNED_WORDS_FILE, "a", encoding="utf-8") as file:
             file.write(word + "\n")
-
     return jsonify({"status": "added", "word": word})
-
 
 @app.route("/logs/banned_words", methods=["DELETE"])
 def delete_banned_word():
     word = request.json.get("word", "").strip().lower()
     if not word:
         return jsonify({"error": "No word provided"}), 400
-
     existing = read_log(BANNED_WORDS_FILE)
     if word in existing:
         updated = [w for w in existing if w != word]
         with open(BANNED_WORDS_FILE, "w", encoding="utf-8") as file:
             for w in updated:
                 file.write(w + "\n")
-
     return jsonify({"status": "deleted", "word": word})
 
 if __name__ == "__main__":

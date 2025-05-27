@@ -16,9 +16,7 @@ function LogViewer({ type }) {
             method: "POST",
         })
             .then((res) => {
-                if (res.ok) {
-                    setData([]);
-                }
+                if (res.ok) setData([]);
             })
             .catch((err) => console.error("Error clearing log:", err));
     };
@@ -26,19 +24,33 @@ function LogViewer({ type }) {
     return (
         <div>
             <h3>{type === "ads" ? "Blocked Ads" : "Blocked Websites (by content)"}</h3>
-            <button onClick={handleClear} style={{ marginBottom: "10px" }}>
+            <button onClick={handleClear} style={{marginBottom: "10px"}}>
                 Clear Table
             </button>
             <table border="1" cellPadding="5" width="100%">
                 <thead>
                 <tr>
-                    <th>URL</th>
+                    {type === "ads" ? (
+                        <th>URL</th>
+                    ) : (
+                        <>
+                            <th>Blocked Word</th>
+                            <th>URL</th>
+                        </>
+                    )}
                 </tr>
                 </thead>
                 <tbody>
-                {data.map((url, idx) => (
+                {data.map((entry, idx) => (
                     <tr key={idx}>
-                        <td>{url}</td>
+                        {type === "ads" ? (
+                            <td>{entry}</td>
+                        ) : (
+                            <>
+                                <td>{entry.word}</td>
+                                <td>{entry.url}</td>
+                            </>
+                        )}
                     </tr>
                 ))}
                 </tbody>
@@ -47,4 +59,4 @@ function LogViewer({ type }) {
     );
 }
 
-export default LogViewer;
+    export default LogViewer;
