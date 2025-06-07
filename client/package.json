@@ -36,5 +36,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@cypress/code-coverage": "^3.14.4",
+    "babel-plugin-istanbul": "^7.0.0",
+    "customize-cra": "^1.0.0",
+    "cypress": "^14.4.1",
+    "nyc": "^17.1.0",
+    "react-app-rewired": "^2.2.1"
   }
 }

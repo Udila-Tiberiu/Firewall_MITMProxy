@@ -12,8 +12,7 @@ Web application for blocking ads and web-sites that contain unwanted words using
     - python -m venv venv   (To create the venv if it is not created already in this folder)
     - cd venv/Scripts (Go in the venv/Scripts directory)
     - activate.bat  (activate the folder's venv)
-    - cd ..
-    - cd .. (going back to the project directory)
+    - cd ../..  (going back to the project directory)
     - pip install flask flask-cors mitmproxy requests adblockparser  (to download the 'flask-cors' library in the venv if it's not already installed)
 
 
