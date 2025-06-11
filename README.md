@@ -18,6 +18,6 @@ Web application for blocking ads and web-sites that contain unwanted words using
 
 4. Run in the cmd as an administrator this command if you want to run the project:
    - python run_script.py
-   - 
+   
    But if you want to open the mitmproxy web interface too, where you can see the internet traffic and all the flows, you can run this command:
    - python run_script_web.py
