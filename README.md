@@ -16,5 +16,7 @@ Web application for blocking ads and web-sites that contain unwanted words using
     - pip install flask flask-cors mitmproxy requests adblockparser  (to download the 'flask-cors' library in the venv if it's not already installed)
 
 
-3. Run in the cmd as an administrator this commands if you want to run the project:
+3. Run in the cmd as an administrator this command if you want to run the project:
    - python run_script.py
+     (or if you want to open the mitmproxy web interface too, where you can see the internet traffic and all the flows, you can run this command)
+   - python run_script_web.py
