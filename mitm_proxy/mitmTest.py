@@ -5,33 +5,27 @@ import pytest
 from mitmproxy import http
 from types import SimpleNamespace
 
-# Import the mitmproxy script you want to test
 import mitm_script
 
 @pytest.fixture(autouse=True)
 def setup_test_logs(monkeypatch):
-    # Create a temporary directory and empty log files
     temp_dir = tempfile.mkdtemp()
     banned = os.path.join(temp_dir, "banned_words.log")
     ads = os.path.join(temp_dir, "blocked_ads.log")
     content = os.path.join(temp_dir, "blocked_websites.log")
     rules = os.path.join(temp_dir, "ad_rules.log")
 
-    # Write a simple adblock rule
     with open(rules, "w", encoding="utf-8") as f:
         f.write("||ads.example.com^")
 
-    # Write a sample banned word
     with open(banned, "w", encoding="utf-8") as f:
         f.write("badword\n")
 
-    # Override paths in the module
     monkeypatch.setattr(mitm_script, "BANNED_WORDS_FILE", banned)
     monkeypatch.setattr(mitm_script, "LOG_FILE_ADS", ads)
     monkeypatch.setattr(mitm_script, "LOG_FILE_CONTENT", content)
     monkeypatch.setattr(mitm_script, "LOG_AD_RULES", rules)
 
-    # Reinitialize adblock rules
     with open(rules, "r", encoding="utf-8") as f:
         raw_rules = [line.strip() for line in f if line and not line.startswith("!")]
     mitm_script.rules = mitm_script.AdblockRules(raw_rules)

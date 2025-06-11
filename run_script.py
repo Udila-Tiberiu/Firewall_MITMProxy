@@ -3,7 +3,6 @@ import time
 import os
 import sys
 
-# Set paths
 MITM_SCRIPT = "mitm_proxy/mitm_script.py"
 LOG_SERVER_SCRIPT = "server/server.py"
 AD_RULES_DOWNLOADER = "mitm_proxy/adRules_add.py"

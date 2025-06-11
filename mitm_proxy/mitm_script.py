@@ -2,8 +2,8 @@ from mitmproxy import http
 from adblockparser import AdblockRules
 import fnmatch
 import os
+import re
 
-# Patterns for legacy matching (still useful for backup filtering)
 AD_PATTERNS = [
     "*://*.doubleclick.net/*",
     "*://*.googlesyndication.com/*",
@@ -23,7 +23,6 @@ AD_PATTERNS = [
     "*://*.cdn.zedo.com/*"
 ]
 
-# Paths for logs and rule files
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 BANNED_WORDS_FILE = os.path.join(BASE_DIR, "../banned_words.log")
 LOG_FILE_ADS = os.path.join(BASE_DIR, "../blocked_ads.log")
@@ -44,15 +43,14 @@ def matches_ad_pattern(url: str) -> bool:
     return False
 
 def find_blocked_keyword(content: str) -> str | None:
-    """Returns the first matched blocked keyword, or None if no match."""
     blocked_keywords = load_banned_keywords()
     lowered = content.lower()
     for word in blocked_keywords:
-        if word in lowered:
+        pattern = r'\b' + re.escape(word) + r'\b'
+        if re.search(pattern, lowered):
             return word
     return None
 
-# Load adblock rules from file
 with open(LOG_AD_RULES, "r", encoding="utf-8") as f:
     raw_rules = [line.strip() for line in f if line and not line.startswith("!")]
 rules = AdblockRules(raw_rules)

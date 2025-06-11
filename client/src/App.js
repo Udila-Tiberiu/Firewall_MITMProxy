@@ -45,7 +45,6 @@ function App() {
 
             <BannedWordsTable />
 
-            {/* Logs Modal */}
             <Modal
                 isOpen={!!modalType}
                 onRequestClose={closeModal}
@@ -71,7 +70,6 @@ function App() {
                 <LogViewer type={modalType} />
             </Modal>
 
-            {/* Help Button */}
             <button
                 onClick={openHelp}
                 style={{
@@ -90,7 +88,6 @@ function App() {
                 Help
             </button>
 
-            {/* Help Modal */}
             <Modal
                 isOpen={helpOpen}
                 onRequestClose={closeHelp}

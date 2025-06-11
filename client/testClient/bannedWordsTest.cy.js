@@ -20,13 +20,12 @@ describe("Banned Words Management", () => {
     it("does not add empty word", () => {
         cy.get('input').clear();
         cy.contains("Add Word").click();
-        // maybe assert no request was made if possible
     });
 
     it("handles fetch error gracefully", () => {
         cy.intercept("GET", "/logs/banned_words", { forceNetworkError: true }).as("getWordsFail");
         cy.reload();
         cy.wait("@getWordsFail");
-        cy.contains("Banned Words"); // still renders UI
+        cy.contains("Banned Words");
     });
 });
